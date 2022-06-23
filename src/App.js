@@ -12,6 +12,7 @@ import {
     limit,
     orderBy,
     query,
+    serverTimestamp,
 } from "firebase/firestore";
 
 import { useAuthState } from "react-firebase-hooks/auth";
@@ -84,14 +85,15 @@ function ChatRoom() {
         addDoc(collection(firestore, "messages"), {
             message: message,
             user: user.displayName,
-            createdAt: new Date(),
+            createdAt: serverTimestamp(),
+            photoUrl: user.photoURL,
+            uid: user.uid,
         });
         setMessage("");
     };
 
     console.log(messages);
 
-    // component for chat messages that takes the text, user id, and photo url, and renders them, distinguishing whether it was sent or received
     const ChatMessage = ({ message, user, photoUrl }) => {
         return (
             <div
